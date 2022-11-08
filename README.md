@@ -1,34 +1,13 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Welcome Muskrats!
 
-## Getting Started
+## About
 
-First, run the development server:
+This project is a parody, poking fun at Elon Musk's suggestion that he would permaban everyone from Twitter who was impersonating him.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+![Elon's Tweet](/elon-is-burning-twitter-down.png?raw=true)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Develop
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+The project is built on Next.js 13 and Tailwind. I have no idea what I'm doing with either tech. 50/50 I've leaked a secret and someones going to charge me a lot of money. Feel free to contribute.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+No this project does not use [MangoDB](https://github.com/dcramer/mangodb), but it probably should.

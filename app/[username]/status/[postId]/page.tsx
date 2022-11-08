@@ -1,10 +1,9 @@
 import { unstable_getServerSession } from "next-auth";
-import Head from "next/head";
 import Feed from "../../../../components/feed";
-import Sidebar from "../../../../components/sidebar";
 import { getLikesForUser } from "../../../../lib/likes";
 import prisma from "../../../../lib/prisma";
 import { authOptions } from "../../../../pages/api/auth/[...nextauth]";
+import { notFound } from "next/navigation";
 
 export default async function PostDetails({
   params,
@@ -19,19 +18,17 @@ export default async function PostDetails({
 
   const postId = parseInt(params.postId, 10);
   if (!postId) {
-    return <div>404</div>;
+    notFound();
   }
 
   const username = params.username;
   if (username.indexOf("#") === -1) {
-    return {
-      notFound: true,
-    };
+    notFound();
   }
 
   const userId = parseInt(username.split("#")[1], 10);
   if (!userId) {
-    return <div>404</div>;
+    notFound();
   }
 
   const posts = await prisma.post.findMany({

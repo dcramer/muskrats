@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { unstable_getServerSession } from "next-auth";
+import { notFound } from "next/navigation";
 import Feed from "../../components/feed";
 import { getLikesForUser } from "../../lib/likes";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
@@ -13,12 +14,12 @@ export default async function Profile({
 
   const username = params.username;
   if (username.indexOf("#") === -1) {
-    return <div>404</div>;
+    notFound();
   }
 
   const userId = parseInt(username.split("#")[1], 10);
   if (!userId) {
-    return <div>404</div>;
+    notFound();
   }
 
   const prisma = new PrismaClient();

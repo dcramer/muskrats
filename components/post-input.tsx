@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, FormEvent, Ref, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import Profile from "./profile";
 import { useRouter } from "next/router";
@@ -52,7 +52,8 @@ export default function PostInput() {
     setSelectedFile(null);
     setbtnloading(false);
 
-    router.push("/");
+    document && document.location.reload();
+    // router.push("/");
   };
 
   const canSubmit =
@@ -71,7 +72,7 @@ export default function PostInput() {
             onChange={(e) => {
               setContent(e.target.value);
             }}
-            className="bg-transparent focus:outline-none focus:border-b flex-1 py-4"
+            className="bg-transparent focus:outline-none flex-1 py-4"
             placeholder="What's Happening?"
           />
           <input

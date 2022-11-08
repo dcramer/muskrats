@@ -72,6 +72,12 @@ export default function Login({ csrfToken }: any) {
               </button>
             </div>
           </form>
+
+          <p className="container font-xs text-gray text-center mx-auto items-center space-x-2 pt-10 justify-between">
+            <span>{"This site is a parody."}</span>
+            <span className="font-bold w-16 text-center">&middot;</span>
+            <a href="https://github.com/dcramer/muskrats">GitHub</a>
+          </p>
         </div>
       </main>
     </div>

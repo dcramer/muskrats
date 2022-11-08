@@ -40,7 +40,8 @@ export default async function handler(
       })
     : [];
 
-  const mentions = (
+  // lol how to type
+  const mentions: User[] = (
     await Promise.all(
       mentionsUserIds.map(async (userId) => {
         if (!userId) return null;
@@ -51,7 +52,7 @@ export default async function handler(
         });
       })
     )
-  ).filter((m) => !!m);
+  ).filter((m) => !!m) as User[];
 
   const user = await prisma.user.findUniqueOrThrow({
     where: {
