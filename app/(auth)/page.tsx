@@ -1,12 +1,10 @@
-import { PrismaClient } from "@prisma/client";
 import { redirect } from "next/navigation";
+import SuperJSON from "superjson";
 
 import prisma from "../../lib/prisma";
 import Feed from "../../components/feed";
-import PostInput from "../../components/post-input";
 import { getLikesForUser } from "../../lib/likes";
 import { getServerSession } from "../../lib/auth";
-import SuperJSON from "superjson";
 
 export const dynamic = "force-dynamic";
 export default async function Home() {
@@ -28,8 +26,6 @@ export default async function Home() {
       <div className="border-b-[0.2px] sticky top-0 z-50 border-zinc-700 p-3">
         <h1 className="text-2xl font-bold ">Home</h1>
       </div>
-
-      <PostInput />
 
       <Feed posts={SuperJSON.serialize(posts)} likes={likes} />
     </>

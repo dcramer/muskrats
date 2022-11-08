@@ -1,9 +1,10 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import SuperJSON from "superjson";
+
 import Feed from "../../../components/feed";
-import { getServerSession } from "../../../lib/auth";
 import { getLikesForUser } from "../../../lib/likes";
 import prisma from "../../../lib/prisma";
+import { getServerSession } from "../../../lib/auth";
 
 export default async function Profile({
   params,
@@ -11,7 +12,9 @@ export default async function Profile({
   params: { username: string; userId: string };
 }) {
   const session = await getServerSession();
-
+  if (!session) {
+    redirect("/login");
+  }
   const username = params.username;
   if (username.indexOf("#") === -1) {
     notFound();

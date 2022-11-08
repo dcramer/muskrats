@@ -3,7 +3,7 @@ export default async function Head() {
     <>
       <title>Muskrat.club</title>
       <meta name="description" content="A place for true muskrats" />
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" href="/favicon.png" />
     </>
   );
 }

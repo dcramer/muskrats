@@ -28,9 +28,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return;
   }
 
+  let content = body.content;
+  if (content && content.length > 275) {
+    res.status(400).send({ error: "Content is too dang long" });
+  }
+
+  const parentId = body.parent;
+  if (parentId) {
+    const parent = await prisma.post.findUniqueOrThrow({
+      where: {
+        id: parentId,
+      },
+    });
+    const replyUsername = `@elonmusk#${parent.authorId}`;
+    if (!content) content = replyUsername;
+    else if (content.indexOf(replyUsername) !== 0) {
+      content = `${replyUsername} ${content}`;
+    }
+  }
+
   const regex = /(?:^|[^@\w])@(\w{1,15}#([\d]+))\b/g;
-  const mentionsUserIds = body.content
-    ? Array.from((body.content as string).matchAll(regex), (m) => {
+  const mentionsUserIds = content
+    ? Array.from((content as string).matchAll(regex), (m) => {
         const userId = parseInt(m[2], 10);
         if (!userId) return null;
         return userId;
@@ -57,19 +76,39 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     },
   });
 
-  const newPost = await prisma.post.create({
-    data: {
-      content: body.content || null,
-      authorId: user.id,
-      parentId: body.parent || null,
-      image: body.image || null,
-      mentions: {
-        create: mentions.map((m) => ({
-          userId: m.id,
-        })),
+  const queries = [
+    prisma.post.create({
+      data: {
+        content: content,
+        authorId: user.id,
+        parentId: body.parent || null,
+        image: body.image || null,
+        mentions: {
+          create: mentions.map((m) => ({
+            userId: m.id,
+          })),
+        },
       },
-    },
-  });
+    }),
+  ];
+
+  // TODO: should we recurse? ooof
+  if (parentId) {
+    queries.push(
+      prisma.post.update({
+        where: {
+          id: parentId,
+        },
+        data: {
+          numReplies: {
+            increment: 1,
+          },
+        },
+      })
+    );
+  }
+
+  const [newPost] = await prisma.$transaction(queries);
 
   if (newPost.id) {
     res.status(201).json({ id: newPost.id });
