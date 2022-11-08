@@ -39,7 +39,7 @@ export default async function Explore() {
           likes={likes}
         />
       ) : (
-        <p className="mt-2 text-center text-sm text-gray-600">
+        <p className="mt-8 text-center text-sm text-gray-600">
           {`It looks like you're not popular enough yet, Elon.`}
         </p>
       )}
