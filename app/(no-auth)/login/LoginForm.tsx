@@ -1,15 +1,21 @@
 "use client";
+import { useState } from "react";
 import { signIn } from "next-auth/react";
 
 export const LoginForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
+
     signIn("email", {
       email: e.currentTarget.email.value,
       redirect: true,
       callbackUrl: "/",
-    });
+    }).finally(() => setIsLoading(false));
   };
+
+  console.log(isLoading);
 
   return (
     <form className="mt-8 space-y-6" onSubmit={onSubmit}>
@@ -33,7 +39,8 @@ export const LoginForm = () => {
       <div>
         <button
           type="submit"
-          className="group relative flex w-full justify-center rounded-md border border-transparent bg-sky-600 hover:bg-sky-500 py-2 px-4 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+          disabled={isLoading}
+          className="group relative flex w-full justify-center rounded-md border border-transparent bg-sky-600 hover:bg-sky-500 py-2 px-4 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span className="absolute inset-y-0 left-0 flex items-center pl-3">
             <svg
@@ -50,7 +57,7 @@ export const LoginForm = () => {
               />
             </svg>
           </span>
-          Send me a link!
+          {isLoading ? "Sending link..." : "Send me a link!"}
         </button>
       </div>
     </form>
