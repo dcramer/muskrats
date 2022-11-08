@@ -10,10 +10,7 @@ type Output = {
   error?: string;
 };
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Output>
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<Output>) {
   if (req.method !== "POST") {
     res.status(405).send({ error: "Only POST requests allowed" });
     return;

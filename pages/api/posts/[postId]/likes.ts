@@ -9,10 +9,7 @@ type Output = {
   error?: string;
 };
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Output>
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<Output>) {
   const { query, method } = req;
 
   const postId = parseInt(`${query.postId}`, 10);

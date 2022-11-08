@@ -1,16 +1,15 @@
-import { PrismaClient } from "@prisma/client";
-import { unstable_getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-import Feed from "../../components/feed";
-import { getLikesForUser } from "../../lib/likes";
-import { authOptions } from "../../pages/api/auth/[...nextauth]";
+import Feed from "../../../components/feed";
+import { getServerSession } from "../../../lib/auth";
+import { getLikesForUser } from "../../../lib/likes";
+import prisma from "../../../lib/prisma";
 
 export default async function Profile({
   params,
 }: {
   params: { username: string; userId: string };
 }) {
-  const session = await unstable_getServerSession(authOptions);
+  const session = await getServerSession();
 
   const username = params.username;
   if (username.indexOf("#") === -1) {
@@ -22,7 +21,6 @@ export default async function Profile({
     notFound();
   }
 
-  const prisma = new PrismaClient();
   const posts = await prisma.post.findMany({
     where: {
       authorId: userId,
@@ -46,10 +44,7 @@ export default async function Profile({
         <h1 className="text-2xl font-bold ">Elon Musk</h1>
       </div>
 
-      <Feed
-        posts={posts.map((p) => JSON.parse(JSON.stringify(p)))}
-        likes={likes}
-      />
+      <Feed posts={posts.map((p) => JSON.parse(JSON.stringify(p)))} likes={likes} />
     </>
   );
 }

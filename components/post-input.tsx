@@ -3,7 +3,6 @@
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import Profile from "./profile";
-import { useRouter } from "next/router";
 
 /* eslint-disable @next/next/no-img-element */
 export default function PostInput() {
@@ -11,7 +10,6 @@ export default function PostInput() {
   const [content, setContent] = useState("");
   const [btnloading, setbtnloading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const router = useRouter();
 
   const addImage = (e: ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
@@ -56,8 +54,7 @@ export default function PostInput() {
     // router.push("/");
   };
 
-  const canSubmit =
-    (content.length > 0 && content.trim() !== "") || selectedFile;
+  const canSubmit = (content.length > 0 && content.trim() !== "") || selectedFile;
 
   return (
     <div className="p-3 border-b border-zinc-700">
@@ -74,12 +71,7 @@ export default function PostInput() {
           />
           <div className="flex items-center mt-4">
             <div className="flex-grow">
-              <input
-                type="file"
-                className="hidden"
-                ref={inputRef}
-                onChange={addImage}
-              />
+              <input type="file" className="hidden" ref={inputRef} onChange={addImage} />
               <button
                 onClick={() => {
                   inputRef.current?.click();
@@ -103,9 +95,7 @@ export default function PostInput() {
       </div>
       {selectedFile && (
         <div className="p-2 mt-4 relative">
-          <p className="absolute text-4xl top-1/2 left-1/2 -translate-x-1/2">
-            PREVIEW
-          </p>
+          <p className="absolute text-4xl top-1/2 left-1/2 -translate-x-1/2">PREVIEW</p>
           <span
             onClick={() => {
               setSelectedFile(null);

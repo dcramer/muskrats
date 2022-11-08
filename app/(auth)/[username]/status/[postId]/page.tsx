@@ -1,9 +1,10 @@
 import { unstable_getServerSession } from "next-auth";
-import Feed from "../../../../components/feed";
-import { getLikesForUser } from "../../../../lib/likes";
-import prisma from "../../../../lib/prisma";
-import { authOptions } from "../../../../pages/api/auth/[...nextauth]";
+import Feed from "../../../../../components/feed";
+import { getLikesForUser } from "../../../../../lib/likes";
+import prisma from "../../../../../lib/prisma";
+import { authOptions } from "../../../../../pages/api/auth/[...nextauth]";
 import { notFound } from "next/navigation";
+import { getServerSession } from "../../../../../lib/auth";
 
 export default async function PostDetails({
   params,
@@ -14,7 +15,7 @@ export default async function PostDetails({
     postId: string;
   };
 }) {
-  const session = await unstable_getServerSession(authOptions);
+  const session = await getServerSession();
 
   const postId = parseInt(params.postId, 10);
   if (!postId) {
@@ -55,10 +56,7 @@ export default async function PostDetails({
         <h1 className="text-2xl font-bold">Post</h1>
       </div>
 
-      <Feed
-        posts={posts.map((p) => JSON.parse(JSON.stringify(p)))}
-        likes={likes}
-      />
+      <Feed posts={posts.map((p) => JSON.parse(JSON.stringify(p)))} likes={likes} />
     </>
   );
 }

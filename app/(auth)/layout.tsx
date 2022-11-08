@@ -1,12 +1,8 @@
-import Sidebar from "../components/sidebar";
-import "../styles/globals.css";
+import Sidebar from "../../components/sidebar";
+import "../../styles/globals.css";
 import AuthContext from "./auth-context";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <AuthContext>
       <html lang="en">

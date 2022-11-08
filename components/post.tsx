@@ -10,7 +10,7 @@ import { HeartIcon as FilledHeartIcon } from "@heroicons/react/24/solid";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import moment from "moment";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 moment.locale("en", {
   relativeTime: {
@@ -40,16 +40,6 @@ const escapeHtml = (value: string) => {
     .replace(/'/g, "&#039;");
 };
 
-const Content = React.memo(function Content({ value }: { value: string }) {
-  const regex = /(?:^|[^@\w])@(\w{1,15}#[\d]+)\b/g;
-  const html = escapeHtml(value).replace(regex, (...args) => {
-    return `<a href="${encodeURIComponent(
-      args[1]
-    )}" class="text-sky-500 no-underline hover:underline">@${args[1]}</a>`;
-  });
-  return <div dangerouslySetInnerHTML={{ __html: html }} />;
-});
-
 export default function Post({
   postId,
   name,
@@ -75,6 +65,15 @@ export default function Post({
 }) {
   const [isLikedCurrent, setLiked] = useState(isLiked);
   const [likeCountCurrent, setLikeCount] = useState(numLikes);
+
+  const htmlContent = useMemo(() => {
+    const regex = /(?:^|[^@\w])@(\w{1,15}#[\d]+)\b/g;
+    return escapeHtml(content || "").replace(regex, (...args) => {
+      return `<a href="${encodeURIComponent(
+        args[1]
+      )}" class="text-sky-500 no-underline hover:underline">@${args[1]}</a>`;
+    });
+  }, [content]);
 
   return (
     <div className="pt-4 py-2 px-4 cursor-pointer border-b border-zinc-700 hover:bg-gray-600 hover:bg-opacity-30">
@@ -102,10 +101,11 @@ export default function Post({
               </Link>
             </p>
           </div>
-          {content && (
-            <p className="text-base text-justify whitespace-pre-line">
-              <Content value={content} />
-            </p>
+          {htmlContent && (
+            <div
+              className="text-base text-justify whitespace-pre-line"
+              dangerouslySetInnerHTML={{ __html: htmlContent }}
+            />
           )}
           {image && (
             <img
@@ -117,11 +117,7 @@ export default function Post({
           )}
 
           <div className="flex items-center justify-between">
-            <PostFooterInfo
-              Icon={ChatBubbleOvalLeftIcon}
-              color="gray"
-              count={0}
-            />
+            <PostFooterInfo Icon={ChatBubbleOvalLeftIcon} color="gray" count={0} />
             <PostFooterInfo Icon={ArrowsRightLeftIcon} color="gray" count={0} />
             <PostFooterInfo
               Icon={isLikedCurrent ? FilledHeartIcon : HeartIcon}
