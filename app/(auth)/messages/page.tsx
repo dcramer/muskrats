@@ -1,9 +1,8 @@
-import { unstable_getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "../../pages/api/auth/[...nextauth]";
+import { getServerSession } from "../../../lib/auth";
 
 export default async function Messages() {
-  const session = await unstable_getServerSession(authOptions);
+  const session = await getServerSession();
   if (!session) {
     redirect("/login");
   }

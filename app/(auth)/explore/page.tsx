@@ -1,11 +1,17 @@
+import { redirect } from "next/navigation";
 import SuperJSON from "superjson";
+
+import prisma from "../../../lib/prisma";
 import Feed from "../../../components/feed";
 import { getServerSession } from "../../../lib/auth";
 import { getLikesForUser } from "../../../lib/likes";
-import prisma from "../../../lib/prisma";
 
 export default async function Explore() {
   const session = await getServerSession();
+  if (!session) {
+    redirect("/login");
+  }
+
   const posts = await prisma.post.findMany({
     orderBy: {
       createdAt: "desc",

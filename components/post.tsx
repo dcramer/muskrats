@@ -63,15 +63,6 @@ export default function Post({
   const [isLikedCurrent, setLiked] = useState(isLiked);
   const [likeCountCurrent, setLikeCount] = useState(numLikes);
 
-  const htmlContent = useMemo(() => {
-    const regex = /(?:^|[^@\w])@(\w{1,15}#[\d]+)\b/g;
-    return escapeHtml(content || "").replace(regex, (...args) => {
-      return `<a href="${encodeURIComponent(
-        args[1]
-      )}" class="text-sky-500 no-underline hover:underline">@${args[1]}</a>`;
-    });
-  }, [content]);
-
   return (
     <div className="pt-4 py-2 px-4 cursor-pointer border-b border-zinc-700 hover:bg-gray-600 hover:bg-opacity-30">
       <div className="flex items-start justify-stretch space-x-3">
