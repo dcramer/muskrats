@@ -2,6 +2,7 @@ import Feed from "../../../components/feed";
 import prisma from "../../../lib/prisma";
 import { getServerSession } from "../../../lib/auth";
 import { getLikesForUser } from "../../../lib/likes";
+import SuperJSON from "superjson";
 
 export default async function Bookmarks() {
   const session = await getServerSession();
@@ -31,7 +32,7 @@ export default async function Bookmarks() {
         <h1 className="text-2xl font-bold ">Explore</h1>
       </div>
 
-      <Feed posts={posts.map((p) => JSON.parse(JSON.stringify(p)))} likes={likes} />
+      <Feed posts={SuperJSON.serialize(posts)} likes={likes} />
     </>
   );
 }

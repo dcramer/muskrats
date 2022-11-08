@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import SuperJSON from "superjson";
 import Feed from "../../../components/feed";
 import { getServerSession } from "../../../lib/auth";
 import { getLikesForUser } from "../../../lib/likes";
@@ -44,7 +45,7 @@ export default async function Profile({
         <h1 className="text-2xl font-bold ">Elon Musk</h1>
       </div>
 
-      <Feed posts={posts.map((p) => JSON.parse(JSON.stringify(p)))} likes={likes} />
+      <Feed posts={SuperJSON.serialize(posts)} likes={likes} />
     </>
   );
 }

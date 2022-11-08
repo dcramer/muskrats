@@ -5,6 +5,7 @@ import prisma from "../../../../../lib/prisma";
 import { authOptions } from "../../../../../pages/api/auth/[...nextauth]";
 import { notFound } from "next/navigation";
 import { getServerSession } from "../../../../../lib/auth";
+import SuperJSON from "superjson";
 
 export default async function PostDetails({
   params,
@@ -56,7 +57,7 @@ export default async function PostDetails({
         <h1 className="text-2xl font-bold">Post</h1>
       </div>
 
-      <Feed posts={posts.map((p) => JSON.parse(JSON.stringify(p)))} likes={likes} />
+      <Feed posts={SuperJSON.serialize(posts)} likes={likes} />
     </>
   );
 }

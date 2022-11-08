@@ -1,3 +1,4 @@
+import SuperJSON from "superjson";
 import Feed from "../../../components/feed";
 import { getServerSession } from "../../../lib/auth";
 import { getLikesForUser } from "../../../lib/likes";
@@ -28,7 +29,7 @@ export default async function Explore() {
   return (
     <>
       {posts.length ? (
-        <Feed posts={posts.map((p) => JSON.parse(JSON.stringify(p)))} likes={likes} />
+        <Feed posts={SuperJSON.serialize(posts)} likes={likes} />
       ) : (
         <p className="mt-2 text-center text-sm text-gray-600">
           {`It looks like you're not popular enough yet, Elon.`}

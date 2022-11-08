@@ -6,6 +6,7 @@ import Feed from "../../components/feed";
 import PostInput from "../../components/post-input";
 import { getLikesForUser } from "../../lib/likes";
 import { getServerSession } from "../../lib/auth";
+import SuperJSON from "superjson";
 
 export const dynamic = "force-dynamic";
 export default async function Home() {
@@ -30,7 +31,7 @@ export default async function Home() {
 
       <PostInput />
 
-      <Feed posts={posts.map((p) => JSON.parse(JSON.stringify(p)))} likes={likes} />
+      <Feed posts={SuperJSON.serialize(posts)} likes={likes} />
     </>
   );
 }
