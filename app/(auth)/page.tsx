@@ -27,7 +27,7 @@ export default async function Home() {
         <h1 className="text-2xl font-bold ">Home</h1>
       </div>
 
-      <Feed posts={SuperJSON.serialize(posts)} likes={likes} />
+      <Feed posts={SuperJSON.serialize(posts)} likes={likes} showNewPost />
     </>
   );
 }
