@@ -1,0 +1,119 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model Post {
+  id        Int      @id() @default(autoincrement())
+  parentId  Int?
+  parent    Post?    @relation("PostParents", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  content   String?  @db.Text
+  authorId  Int
+  author    User     @relation(fields: [authorId], references: [id])
+  image     String?  @db.Text
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  children  Post[]   @relation("PostParents")
+
+  mentions Mention[]
+
+  numLikes   Int @default(0)
+  numReplies Int @default(0)
+  numReposts Int @default(0)
+
+  likes   Like[]
+  reposts Repost[]
+}
+
+model Mention {
+  postId    Int
+  userId    Int
+  createdAt DateTime @default(now()) @map(name: "created_at")
+
+  post Post @relation(fields: [postId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@id([postId, userId])
+}
+
+model Like {
+  postId    Int
+  authorId  Int
+  createdAt DateTime @default(now()) @map(name: "created_at")
+
+  post Post @relation(fields: [postId], references: [id])
+  user User @relation(fields: [authorId], references: [id])
+
+  @@id([postId, authorId])
+}
+
+model Repost {
+  postId    Int
+  authorId  Int
+  createdAt DateTime @default(now()) @map(name: "created_at")
+
+  post Post @relation(fields: [postId], references: [id])
+  user User @relation(fields: [authorId], references: [id])
+
+  @@id([postId, authorId])
+}
+
+model User {
+  id            Int       @id() @default(autoincrement())
+  email         String    @unique
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  emailVerified DateTime?
+  image         String?   @db.Text
+  accounts      Account[]
+  sessions      Session[]
+  posts         Post[]
+  mentions      Mention[]
+  likes         Like[]
+  reposts       Repost[]
+
+  @@map(name: "users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       Int
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

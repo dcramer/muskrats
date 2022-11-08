@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    color: white;
+    background: #15202B;
+  }
+}
+
+
+@layer base {
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    font-family:'Poppins', sans-serif;
+
+  }
+
+  .bar-of-progress {
+    z-index: 50;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+
+@layer components {
+  .hover-animation {
+    @apply hover:bg-slate-300 hover:bg-opacity-10 cursor-pointer rounded-full py-3 px-4 transition-all duration-500 ease-out;
+  }
+
+  .error-msg {
+    @apply text-red-600 -my-[5px];
+  }
+}
