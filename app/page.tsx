@@ -31,10 +31,8 @@ export default async function Home() {
       <div className="border-b-[0.2px] sticky top-0 z-50 border-zinc-700 p-3">
         <h1 className="text-2xl font-bold ">Home</h1>
       </div>
-
-      <PostInput />
-
       <Feed
+        showNewPost
         posts={posts.map((p) => JSON.parse(JSON.stringify(p)))}
         likes={likes}
       />

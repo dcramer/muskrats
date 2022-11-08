@@ -11,6 +11,7 @@ import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import moment from "moment";
 import Link from "next/link";
 import React, { useState } from "react";
+import PostContent from "./post-content";
 
 moment.locale("en", {
   relativeTime: {
@@ -31,25 +32,6 @@ moment.locale("en", {
   },
 });
 
-const escapeHtml = (value: string) => {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-};
-
-const Content = React.memo(function Content({ value }: { value: string }) {
-  const regex = /(?:^|[^@\w])@(\w{1,15}#[\d]+)\b/g;
-  const html = escapeHtml(value).replace(regex, (...args) => {
-    return `<a href="${encodeURIComponent(
-      args[1]
-    )}" class="text-sky-500 no-underline hover:underline">@${args[1]}</a>`;
-  });
-  return <div dangerouslySetInnerHTML={{ __html: html }} />;
-});
-
 export default function Post({
   postId,
   name,
@@ -59,8 +41,10 @@ export default function Post({
   content,
   createdAt,
   numLikes,
-
+  numReplies,
+  numReposts,
   isLiked,
+  onReplyTo,
 }: {
   postId: number;
   name: string;
@@ -70,8 +54,11 @@ export default function Post({
   content?: string | null;
   createdAt: Date;
   numLikes: number;
-
+  numReplies: number;
+  numReposts: number;
   isLiked: boolean;
+
+  onReplyTo: () => void;
 }) {
   const [isLikedCurrent, setLiked] = useState(isLiked);
   const [likeCountCurrent, setLikeCount] = useState(numLikes);
@@ -88,24 +75,24 @@ export default function Post({
         />
         <div className="flex flex-col space-y-0 text-base flex-1">
           <div className="flex space-x-2 items-center">
-            <p className="font-semibold hover:underline flex">
+            <div className="font-semibold hover:underline flex">
               <Link href={`/${encodeURIComponent(username)}`} className="flex">
                 {name} <CheckBadgeIcon className={`text-white-600 w-5 h-5`} />
               </Link>
-            </p>
-            <p className="text-base font-light">@{username}</p>
+            </div>
+            <div className="text-base font-light">@{username}</div>
             <span className="font-bold">&middot;</span>
 
-            <p className="text-base text-gray hover:underline">
+            <div className="text-base text-gray hover:underline">
               <Link href={`/${encodeURIComponent(username)}/status/${postId}`}>
                 {moment(createdAt).fromNow()}
               </Link>
-            </p>
+            </div>
           </div>
           {content && (
-            <p className="text-base text-justify whitespace-pre-line">
-              <Content value={content} />
-            </p>
+            <div className="text-base text-justify whitespace-pre-line">
+              <PostContent value={content} />
+            </div>
           )}
           {image && (
             <img
@@ -117,13 +104,21 @@ export default function Post({
           )}
 
           <div className="flex items-center justify-between">
-            <PostFooterInfo
+            <PostAction
               Icon={ChatBubbleOvalLeftIcon}
               color="gray"
-              count={0}
+              count={numReplies}
+              onClick={(e: any) => {
+                e.preventDefault();
+                onReplyTo();
+              }}
             />
-            <PostFooterInfo Icon={ArrowsRightLeftIcon} color="gray" count={0} />
-            <PostFooterInfo
+            <PostAction
+              Icon={ArrowsRightLeftIcon}
+              color="gray"
+              count={numReposts}
+            />
+            <PostAction
               Icon={isLikedCurrent ? FilledHeartIcon : HeartIcon}
               color={isLikedCurrent ? "red" : "gray"}
               count={likeCountCurrent}
@@ -148,7 +143,7 @@ export default function Post({
   );
 }
 
-const PostFooterInfo = ({ Icon, count, color, ...props }: any) => {
+const PostAction = ({ Icon, count, color, ...props }: any) => {
   const theme = `text-${color}`;
   return (
     <div
@@ -156,7 +151,7 @@ const PostFooterInfo = ({ Icon, count, color, ...props }: any) => {
       {...props}
     >
       <Icon className={`w-5 h-5`} />
-      <p className={theme}>{count}</p>
+      <div className={theme}>{count}</div>
     </div>
   );
 };

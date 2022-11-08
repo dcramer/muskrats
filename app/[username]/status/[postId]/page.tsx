@@ -1,9 +1,10 @@
 import { unstable_getServerSession } from "next-auth";
-import Feed from "../../../../components/feed";
 import { getLikesForUser } from "../../../../lib/likes";
 import prisma from "../../../../lib/prisma";
 import { authOptions } from "../../../../pages/api/auth/[...nextauth]";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { Post as PostType } from "@prisma/client";
+import PostExpanded from "../../../../components/post-expanded";
 
 export default async function PostDetails({
   params,
@@ -15,6 +16,10 @@ export default async function PostDetails({
   };
 }) {
   const session = await unstable_getServerSession(authOptions);
+
+  if (!session) {
+    redirect("/login");
+  }
 
   const postId = parseInt(params.postId, 10);
   if (!postId) {
@@ -36,17 +41,27 @@ export default async function PostDetails({
       id: postId,
       authorId: userId,
     },
+    include: {
+      parent: true,
+    },
     orderBy: {
       createdAt: "desc",
     },
   });
 
+  const allPosts: PostType[] = [
+    ...posts,
+    ...(posts.map((p) => p.parent).filter((p) => !!p) as PostType[]),
+  ];
+
   const likes = session
     ? await getLikesForUser({
-        postList: posts,
+        postList: allPosts,
         userId: session!.user!.id,
       })
     : [];
+
+  const post = posts[0];
 
   return (
     <>
@@ -54,11 +69,7 @@ export default async function PostDetails({
         back arrow
         <h1 className="text-2xl font-bold">Post</h1>
       </div>
-
-      <Feed
-        posts={posts.map((p) => JSON.parse(JSON.stringify(p)))}
-        likes={likes}
-      />
+      <PostExpanded post={post} likes={likes} />
     </>
   );
 }

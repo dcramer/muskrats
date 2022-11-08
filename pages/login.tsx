@@ -13,6 +13,7 @@ export default function Login({ csrfToken }: any) {
     <div className="max-w-7xl min-h-screen mx-auto flex">
       <Head>
         <title>Login / Muskrat.club</title>
+        <link rel="icon" href="/favicon.png" />
       </Head>
       <main className="flex-grow border-x-[0.2px] ml-[60px] sm:ml-[70px] md:ml-[100px] lg:ml-[250px] max-w-2xl border-zinc-700 p-10">
         <div className="container">
