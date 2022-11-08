@@ -63,41 +63,42 @@ export default function PostInput() {
     <div className="p-3 border-b border-zinc-700">
       <div className="flex space-x-3">
         <Profile />
-        <form
-          onSubmit={handleTweetSubmit}
-          className="flex-1 flex items-center justify-center space-x-2"
-        >
+        <form onSubmit={handleTweetSubmit} className="flex-1 flex flex-col">
           <textarea
             value={content}
             onChange={(e) => {
               setContent(e.target.value);
             }}
-            className="bg-transparent focus:outline-none flex-1 py-4"
+            className="bg-transparent focus:outline-none focus:border-b border-gray focus: flex-1 py-4"
             placeholder="What's Happening?"
           />
-          <input
-            type="file"
-            className="hidden"
-            ref={inputRef}
-            onChange={addImage}
-          />
-          <button
-            onClick={() => {
-              inputRef.current?.click();
-            }}
-            title="Add Image"
-            type="button"
-            className=" hover:bg-gray-200 hover:bg-opacity-10 text-sky-600 rounded-full"
-          >
-            <PhotoIcon className="w-10 h-10 p-2" />
-          </button>
-          <button
-            type="submit"
-            disabled={!canSubmit}
-            className="py-3 px-4 font-bold bg-gradient-to-r rounded-full text-xs bg-sky-600 hover:bg-sky-500 mx-auto disabled:cursor-not-allowed disabled:bg-gray"
-          >
-            {btnloading ? "..." : "Post"}
-          </button>
+          <div className="flex items-center mt-4">
+            <div className="flex-grow">
+              <input
+                type="file"
+                className="hidden"
+                ref={inputRef}
+                onChange={addImage}
+              />
+              <button
+                onClick={() => {
+                  inputRef.current?.click();
+                }}
+                title="Add Image"
+                type="button"
+                className="hover:bg-gray-200 hover:bg-opacity-10 text-sky-600 rounded-full"
+              >
+                <PhotoIcon className="w-7 h-7" />
+              </button>
+            </div>
+            <button
+              type="submit"
+              disabled={!canSubmit}
+              className="py-2 px-4 font-bold bg-gradient-to-r rounded-full text-xs bg-sky-600 hover:bg-sky-500 mx-auto disabled:cursor-not-allowed disabled:bg-gray"
+            >
+              {btnloading ? "..." : "Post"}
+            </button>
+          </div>
         </form>
       </div>
       {selectedFile && (
