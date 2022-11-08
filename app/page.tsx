@@ -4,9 +4,13 @@ import Feed from "../components/feed";
 import PostInput from "../components/post-input";
 import { getLikesForUser } from "../lib/likes";
 import { authOptions } from "../pages/api/auth/[...nextauth]";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const session = await unstable_getServerSession(authOptions);
+  if (!session) {
+    redirect("/login");
+  }
 
   const prisma = new PrismaClient();
   const posts = await prisma.post.findMany({
