@@ -1,13 +1,17 @@
-import { PrismaClient } from "@prisma/client";
 import { unstable_getServerSession } from "next-auth";
 import Feed from "../../components/feed";
 import { getLikesForUser } from "../../lib/likes";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
+import prisma from "../../lib/prisma";
+import { redirect } from "next/navigation";
 
 export default async function Explore() {
   const session = await unstable_getServerSession(authOptions);
 
-  const prisma = new PrismaClient();
+  if (!session) {
+    redirect("/login");
+  }
+
   const posts = await prisma.post.findMany({
     orderBy: {
       createdAt: "desc",

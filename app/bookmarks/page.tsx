@@ -1,13 +1,16 @@
-import { PrismaClient } from "@prisma/client";
 import { unstable_getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 import Feed from "../../components/feed";
 import { getLikesForUser } from "../../lib/likes";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
+import prisma from "../../lib/prisma";
 
 export default async function Bookmarks() {
   const session = await unstable_getServerSession(authOptions);
+  if (!session) {
+    redirect("/login");
+  }
 
-  const prisma = new PrismaClient();
   const posts = await prisma.post.findMany({
     where: {
       likes: {

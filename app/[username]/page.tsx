@@ -1,9 +1,9 @@
-import { PrismaClient } from "@prisma/client";
 import { unstable_getServerSession } from "next-auth";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Feed from "../../components/feed";
 import { getLikesForUser } from "../../lib/likes";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
+import prisma from "../../lib/prisma";
 
 export default async function Profile({
   params,
@@ -11,7 +11,9 @@ export default async function Profile({
   params: { username: string; userId: string };
 }) {
   const session = await unstable_getServerSession(authOptions);
-
+  if (!session) {
+    redirect("/login");
+  }
   const username = params.username;
   if (username.indexOf("#") === -1) {
     notFound();
@@ -22,7 +24,6 @@ export default async function Profile({
     notFound();
   }
 
-  const prisma = new PrismaClient();
   const posts = await prisma.post.findMany({
     where: {
       authorId: userId,
