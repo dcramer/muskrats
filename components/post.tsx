@@ -72,7 +72,8 @@ export default function Post({
       className="pt-4 py-2 px-4 cursor-pointer border-b border-zinc-700 hover:bg-gray hover:bg-opacity-10"
       // onClick={(e) => {
       //   e.preventDefault();
-      //   if ((e.target as HTMLElement).tagName === "A") return;
+      //   const tagName = (e.target as HTMLElement).tagName;
+      //   if (tagName === "A" || tagName === "BUTTON") return;
       //   const isTextSelected = window && window.getSelection()?.toString();
       //   if (!isTextSelected) {
       //     router.push(postLink);
@@ -121,7 +122,7 @@ export default function Post({
               color="gray"
               count={numReplies}
               onClick={(e: any) => {
-                e.preventDefault();
+                e.stopPropagation();
                 onReplyTo();
               }}
             />
@@ -135,6 +136,8 @@ export default function Post({
               color={isLikedCurrent ? "red" : "gray"}
               count={likeCountCurrent}
               onClick={async (e: any) => {
+                e.stopPropagation();
+
                 const res = await fetch(`/api/posts/${postId}/likes`, {
                   method: isLikedCurrent ? "DELETE" : "POST",
                 });
@@ -158,12 +161,12 @@ export default function Post({
 const PostAction = ({ Icon, count, color, ...props }: any) => {
   const theme = `text-${color}`;
   return (
-    <div
+    <button
       className={`${theme} text-sm flex items-center space-x-2 bg-transparent hover:bg-slate-100 rounded-3xl hover:bg-opacity-10 p-2 hover:text-sky-400`}
       {...props}
     >
       <Icon className={`w-5 h-5`} />
-      <div className={theme}>{count}</div>
-    </div>
+      <span className={theme}>{count}</span>
+    </button>
   );
 };
