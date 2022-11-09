@@ -27,7 +27,7 @@ export default function Sidebar() {
       <div className="flex flex-col items-center md:items-start md:ml-4 space-y-3">
         <Link href="/">
           <div className="hover-animation w-16 h-16 flex items-center justify-center">
-            <Image src="/favicon.png" width="16" height="16" alt="logo" />
+            <Image src="/favicon.png" width="32" height="32" alt="logo" />
           </div>
         </Link>
         <SidebarHelper Icon={HomeIcon} title={"Home"} href="/" />
