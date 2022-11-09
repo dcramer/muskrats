@@ -15,8 +15,6 @@ export const LoginForm = () => {
     }).finally(() => setIsLoading(false));
   };
 
-  console.log(isLoading);
-
   return (
     <form className="mt-8 space-y-6" onSubmit={onSubmit}>
       <div className="-space-y-px rounded-md shadow-sm">

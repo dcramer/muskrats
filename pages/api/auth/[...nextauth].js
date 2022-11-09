@@ -40,7 +40,7 @@ export const authOptions = {
 export default NextAuth({
   ...authOptions,
   logger: {
-    debug: (...args) => console.log(...args),
+    // debug: (...args) => console.log(...args),
     error: (...args) => console.log(...args),
     warn: (...args) => console.log(...args),
   },

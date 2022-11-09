@@ -8,16 +8,16 @@ import { getServerSession } from "../../lib/auth";
 
 export const dynamic = "force-dynamic";
 export default async function Home() {
-  const resp = await getServerSession();
-  if (!resp) {
+  const session = await getServerSession();
+  if (!session) {
     redirect("/login");
   }
 
   const posts = await prisma.post.findMany({ orderBy: { createdAt: "desc" } });
-  const likes = resp
+  const likes = session
     ? await getLikesForUser({
         postList: posts,
-        userId: resp.user.id,
+        userId: session.user.id,
       })
     : [];
 
