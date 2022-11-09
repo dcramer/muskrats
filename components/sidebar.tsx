@@ -4,6 +4,7 @@ import {
   BellIcon,
   EnvelopeIcon,
   BookmarkIcon,
+  CogIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
@@ -52,6 +53,7 @@ export default function Sidebar() {
           title={"Profile"}
           href={`/${encodeURIComponent(username)}`}
         />
+        <SidebarHelper Icon={CogIcon} title={"Settings"} href={`/settings`} />
         {/* {canPost && (
           <button
             onClick={() => {

@@ -72,13 +72,15 @@ model User {
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   emailVerified DateTime?
-  image         String?   @db.Text
-  accounts      Account[]
-  sessions      Session[]
-  posts         Post[]
-  mentions      Mention[]
-  likes         Like[]
-  reposts       Repost[]
+  image         Bytes?
+  onboarded     Boolean   @default(false)
+
+  accounts Account[]
+  sessions Session[]
+  posts    Post[]
+  mentions Mention[]
+  likes    Like[]
+  reposts  Repost[]
 
   @@map(name: "users")
 }

@@ -1,6 +1,13 @@
 "use client";
 
-import { ChangeEvent, FormEvent, Fragment, useEffect, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  Fragment,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import Profile from "./profile";
 import { Post as PostType } from "@prisma/client";
@@ -63,7 +70,10 @@ const ParentPost = ({ post }: { post: PostType }) => {
           )}
           <div className="text-sm pt-2 text-gray">
             {"Replying to "}
-            <Link href={`/${encodeURIComponent(username)}`} className="text-sky-500">
+            <Link
+              href={`/${encodeURIComponent(username)}`}
+              className="text-sky-500"
+            >
               {username}
             </Link>
           </div>
@@ -165,25 +175,24 @@ function PostInputMain({ parent, setParent, hidden = false }: Props) {
       body: JSON.stringify(post),
     });
 
+    setbtnloading(false);
+
     if (res.status === 201) {
       console.log("Post successfully created.");
       res.json().then((d) => console.log(d));
+      setContent("");
+      setSelectedFile(null);
+      document && document.location.reload();
     } else {
       console.log("Something went wrong.");
     }
-
-    setContent("");
-    setSelectedFile(null);
-    setbtnloading(false);
-
-    document && document.location.reload();
-    // router.push("/");
   };
 
   const remainingChars = MAX_LENGTH - content.length;
 
   const canSubmit =
-    (remainingChars > 0 && content.length > 0 && content.trim() !== "") || selectedFile;
+    (remainingChars > 0 && content.length > 0 && content.trim() !== "") ||
+    selectedFile;
 
   return (
     <div className="p-3 border-b border-zinc-700">
@@ -199,12 +208,19 @@ function PostInputMain({ parent, setParent, hidden = false }: Props) {
             }}
             ref={contentRef}
             className="bg-transparent focus:outline-none border-gray focus: flex-1 py-4"
-            placeholder={parent ? "Tell them how they're wrong" : "What's Happening?"}
+            placeholder={
+              parent ? "Tell them how they're wrong" : "What's Happening?"
+            }
             style={{ resize: "none" }}
           />
           <div className="flex items-center mt-4">
             <div className="flex-grow">
-              <input type="file" className="hidden" ref={inputRef} onChange={addImage} />
+              <input
+                type="file"
+                className="hidden"
+                ref={inputRef}
+                onChange={addImage}
+              />
               <button
                 onClick={() => {
                   inputRef.current?.click();
@@ -239,7 +255,9 @@ function PostInputMain({ parent, setParent, hidden = false }: Props) {
       </div>
       {selectedFile && (
         <div className="p-2 mt-4 relative">
-          <p className="absolute text-4xl top-1/2 left-1/2 -translate-x-1/2">PREVIEW</p>
+          <p className="absolute text-4xl top-1/2 left-1/2 -translate-x-1/2">
+            PREVIEW
+          </p>
           <span
             onClick={() => {
               setSelectedFile(null);
