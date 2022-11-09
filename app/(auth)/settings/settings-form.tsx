@@ -61,7 +61,7 @@ export default function SettingsForm() {
             <label className="block text-base font-bold text-gray">
               Username
             </label>
-            <p>{`elonmusk#${session.user?.id}`}</p>
+            <p>{`elonmusk#${session?.user?.id}`}</p>
           </div>
         </div>
         <div className="space-y-6 px-4 py-5 sm:p-6">
