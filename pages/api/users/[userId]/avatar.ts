@@ -42,8 +42,10 @@ export default async function handler(
     const dataUri = inflateSync(user.image).toString();
     const [mimeTypeBit, base64Bit] = dataUri.split(";base64,");
     const buf = Buffer.from(base64Bit, "base64");
-    res.setHeader("Content-Type", mimeTypeBit.substring(5));
-    res.status(200).send(buf);
+    res
+      .setHeader("Content-Type", mimeTypeBit.substring(5))
+      .status(200)
+      .send(buf);
   } else {
     const rng = seedrandom(`${userId}`);
     const avatarUrl = avatarChoices[Math.floor(rng() * avatarChoices.length)];

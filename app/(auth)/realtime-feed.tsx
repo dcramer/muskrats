@@ -8,11 +8,9 @@ import Feed from "../../components/feed";
 import { useInterval } from "usehooks-ts";
 import { Post } from "@prisma/client";
 
-type PostResult =
-  | Post[]
-  | {
-      isLiked?: boolean;
-    };
+type PostResult = Post & {
+  isLiked?: boolean;
+};
 
 export default function RealtimeFeed({
   userId,
@@ -26,7 +24,7 @@ export default function RealtimeFeed({
 
   useEffect(() => {
     const updateFeed = async () => {
-      const posts = SuperJSON.deserialize<PostResult>(
+      const posts = SuperJSON.deserialize<PostResult[]>(
         await (await fetch("/api/posts")).json()
       );
       setPostList(posts);
@@ -36,12 +34,12 @@ export default function RealtimeFeed({
   }, [userId]);
 
   useInterval(async () => {
-    const posts = SuperJSON.deserialize<PostResult>(
+    const posts = SuperJSON.deserialize<PostResult[]>(
       await (await fetch("/api/posts")).json()
     );
 
     const tmpPendingUpdates = [...pendingUpdates];
-    let post: Post;
+    let post: PostResult;
     for (let i = 0; i < posts.length; i++) {
       post = posts[i];
       if (

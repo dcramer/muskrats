@@ -15,11 +15,9 @@ type Props = {
   onShowPending?: () => void;
 };
 
-type PostResult =
-  | PostType[]
-  | {
-      isLiked?: boolean;
-    };
+type PostResult = PostType & {
+  isLiked?: boolean;
+};
 
 // eslint-disable-next-line react/display-name
 export const Feed = ({
