@@ -4,7 +4,7 @@ Welcome Muskrats!
 
 This project is a parody, poking fun at Elon Musk's suggestion that he would permaban everyone from Twitter who was impersonating him.
 
-![Elon's Tweet](/elon-is-burning-twitter-down.png?raw=true)
+![Elon's Tweet](/public/elon-is-burning-twitter-down.png?raw=true)
 
 The project is mostly straight forward. You can only be Elon Musk - as if you're one of the many people with verified status on Twitter who are or have been acting as a parody of his account.
 

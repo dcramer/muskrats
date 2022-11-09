@@ -1,3 +1,4 @@
+import Image from "next/image";
 import "../../../styles/globals.css";
 
 import { LoginForm } from "./LoginForm";
@@ -18,6 +19,14 @@ export default async function Login() {
           </p>
 
           <LoginForm />
+
+          <Image
+            src="/elon-is-burning-twitter-down.png"
+            width="603"
+            height="305"
+            alt="burn it down"
+            className="pt-8"
+          />
 
           <p className="container font-xs text-gray text-center mx-auto items-center space-x-2 pt-10 justify-between">
             <span>{"This site is a parody."}</span>
