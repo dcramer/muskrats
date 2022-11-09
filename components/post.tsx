@@ -94,7 +94,7 @@ export default function Post({
                 {name} <CheckBadgeIcon className={`text-white-600 w-5 h-5`} />
               </Link>
             </div>
-            <div className="text-base font-light">@{username}</div>
+            <div className="text-base font-light text-gray">@{username}</div>
             <span className="font-bold">&middot;</span>
 
             <div className="text-base text-gray hover:underline">
