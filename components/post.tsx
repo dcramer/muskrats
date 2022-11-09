@@ -69,11 +69,12 @@ export default function Post({
 
   return (
     <div
-      className="pt-4 py-2 px-4 cursor-pointer border-b border-zinc-700 hover:bg-gray-600 hover:bg-opacity-30"
+      className="pt-4 py-2 px-4 cursor-pointer border-b border-zinc-700 hover:bg-gray hover:bg-opacity-10"
       onClick={(e) => {
-        const isTextSelected = window && window.getSelection();
+        e.preventDefault();
+        if (e.target.tagName === "A") return;
+        const isTextSelected = window && window.getSelection()?.toString();
         if (!isTextSelected) {
-          e.stopPropagation();
           router.push(postLink);
         }
       }}
