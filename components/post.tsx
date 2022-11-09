@@ -12,6 +12,7 @@ import {
 import { HeartIcon as FilledHeartIcon } from "@heroicons/react/24/solid";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import PostContent from "./post-content";
+import { useRouter } from "next/navigation";
 
 moment.locale("en", {
   relativeTime: {
@@ -62,9 +63,21 @@ export default function Post({
 }) {
   const [isLikedCurrent, setLiked] = useState(isLiked);
   const [likeCountCurrent, setLikeCount] = useState(numLikes);
+  const router = useRouter();
+
+  const postLink = `/${encodeURIComponent(username)}/status/${postId}`;
 
   return (
-    <div className="pt-4 py-2 px-4 cursor-pointer border-b border-zinc-700 hover:bg-gray-600 hover:bg-opacity-30">
+    <div
+      className="pt-4 py-2 px-4 cursor-pointer border-b border-zinc-700 hover:bg-gray-600 hover:bg-opacity-30"
+      onClick={(e) => {
+        const isTextSelected = window && window.getSelection();
+        if (!isTextSelected) {
+          e.stopPropagation();
+          router.push(postLink);
+        }
+      }}
+    >
       <div className="flex items-start justify-stretch space-x-3">
         <img
           src={`/api/users/${userId}/avatar`}
@@ -84,9 +97,7 @@ export default function Post({
             <span className="font-bold">&middot;</span>
 
             <div className="text-base text-gray hover:underline">
-              <Link href={`/${encodeURIComponent(username)}/status/${postId}`}>
-                {moment(createdAt).fromNow()}
-              </Link>
+              <Link href={postLink}>{moment(createdAt).fromNow()}</Link>
             </div>
           </div>
           {content && (
@@ -113,7 +124,11 @@ export default function Post({
                 onReplyTo();
               }}
             />
-            <PostAction Icon={ArrowsRightLeftIcon} color="gray" count={numReposts} />
+            <PostAction
+              Icon={ArrowsRightLeftIcon}
+              color="gray"
+              count={numReposts}
+            />
             <PostAction
               Icon={isLikedCurrent ? FilledHeartIcon : HeartIcon}
               color={isLikedCurrent ? "red" : "gray"}
