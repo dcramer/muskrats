@@ -6,6 +6,7 @@ import {
   BookmarkIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -26,7 +27,7 @@ export default function Sidebar() {
       <div className="flex flex-col items-center md:items-start md:ml-4 space-y-3">
         <Link href="/">
           <div className="hover-animation w-16 h-16 flex items-center justify-center">
-            LOGO
+            <Image src="/favicon.png" width="16" height="16" alt="logo" />
           </div>
         </Link>
         <SidebarHelper Icon={HomeIcon} title={"Home"} href="/" />

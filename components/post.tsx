@@ -68,7 +68,7 @@ export default function Post({
   const postLink = `/${encodeURIComponent(username)}/status/${postId}`;
 
   return (
-    <div
+    <article
       className="pt-4 py-2 px-4 cursor-pointer border-b border-zinc-700 hover:bg-gray hover:bg-opacity-10"
       onClick={(e) => {
         e.preventDefault();
@@ -151,7 +151,7 @@ export default function Post({
           </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 
