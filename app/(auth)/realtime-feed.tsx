@@ -12,6 +12,17 @@ type PostResult = Post & {
   isLiked?: boolean;
 };
 
+const dedupe = (plist: any[]) => {
+  const seen = new Set();
+  const result: any[] = [];
+  plist.forEach((p) => {
+    if (seen.has(p.id)) return;
+    result.push(p);
+    seen.add(p.id);
+  });
+  return result;
+};
+
 export default function RealtimeFeed({
   userId,
   showNewPost = false,
@@ -51,12 +62,12 @@ export default function RealtimeFeed({
       tmpPendingUpdates.push(post);
     }
 
-    setPendingUpdates(tmpPendingUpdates);
+    setPendingUpdates(dedupe(tmpPendingUpdates));
   }, 5000);
 
   const onShowPending = () => {
     setPendingUpdates([]);
-    setPostList([...pendingUpdates, ...postList]);
+    setPostList(dedupe([...pendingUpdates, ...postList]));
   };
 
   return (
