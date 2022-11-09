@@ -10,6 +10,7 @@ const nextConfig = {
   swcMinify: true,
   experimental: {
     appDir: true,
+    serverComponentsExternalPackages: ["@prisma/client"],
   },
 };
 
