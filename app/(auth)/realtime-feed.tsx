@@ -44,7 +44,7 @@ export default function RealtimeFeed({
       post = posts[i];
       if (
         post.id === postList[0].id ||
-        (tmpPendingUpdates.length && post.id === tmpPendingUpdates[0].id)
+        (pendingUpdates.length && post.id === pendingUpdates[0].id)
       ) {
         break;
       }
