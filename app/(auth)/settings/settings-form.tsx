@@ -1,13 +1,15 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 
 export default function SettingsForm() {
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
-  const [content, setContent] = useState("");
   const [btnloading, setbtnloading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const { data: session } = useSession();
 
   const router = useRouter();
 
@@ -56,7 +58,15 @@ export default function SettingsForm() {
       <div className="shadow sm:overflow-hidden sm:rounded-md">
         <div className="space-y-6 px-4 py-5 sm:p-6">
           <div>
-            <label className="block text-sm font-medium text-gray">
+            <label className="block text-base font-bold text-gray">
+              Username
+            </label>
+            <p>{`elonmusk#${session.user?.id}`}</p>
+          </div>
+        </div>
+        <div className="space-y-6 px-4 py-5 sm:p-6">
+          <div>
+            <label className="block text-base font-bold text-gray">
               Avatar
             </label>
             <div className="mt-1 flex items-center">

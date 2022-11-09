@@ -9,7 +9,7 @@ const avatarChoices = ["/avatar.jpg", "/avatar2.jpg", "/avatar3.jpg"];
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<null>
+  res: NextApiResponse<Buffer>
 ) {
   const {
     query: { userId: rawUserId },
